@@ -1,0 +1,142 @@
+{{ define "home" }}
+
+<!DOCTYPE html>
+<html lang="en">
+{{ template "header" }}
+
+<body>
+
+  <div class="py-4">
+    <div class="container">
+
+      <div class="row justify-content-md-center">
+        <div class="col-12">
+          <h2>Forms</h2>
+          <hr> </div>
+      </div>
+
+      <form class="container" novalidate="" action="/" method="POST" id="myForm">
+        <div class="form-group">
+          <input type="hidden" name="lineuserid" id="lineuserid" value="">
+          <input type="hidden" name="linedisplayname" id="linedisplayname" value="">
+
+          <label class="form-control-label" for="inputSuccess1">Email address</label>
+          <input type="email" class="form-control" name="email" id="email" required="" placeholder="Email">
+          <div class="valid-feedback">Success! You've done it.</div>
+          <div class="invalid-feedback">No, you missed this one.</div>
+        </div>
+
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+
+        <div>
+          <button class="btn btn-primary my-2" type="submit" id="btnSubmit">Submit</button>
+        </div>
+      </form>
+
+      <div name="monitor" id="monitor" class="monitor"></div>
+      <hr>
+
+    </div>
+  </div>
+
+
+  <!--scripts loaded here-->
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <script>
+
+    $("#btnSubmit").click(function (event) {
+
+      // Fetch form to apply custom Bootstrap validation
+      var form = $("#myForm")
+
+      if (form[0].checkValidity() === false) {
+        event.preventDefault()
+        event.stopPropagation()
+        console.log("Fail")
+      } else {
+        console.log("Sucess")
+
+        $(form).submit(function (event) {
+          event.preventDefault();
+          $.post("/", {
+            email: $("#email").val(),
+            lineuserid: $('#lineuserid').val(),
+            linedisplayname: $('#linedisplayname').val()
+          })
+            .done(function (data) {
+              $("#monitor").append(data);
+            });
+        });
+
+      }
+
+      form.addClass('was-validated');
+      // Perform ajax submit here...
+
+
+    });
+
+  </script>
+
+  <script>
+    window.onload = function (e) {
+      liff.init(function (data) {
+        initializeApp(data);
+      });
+    };
+
+    function initializeApp(data) {
+      document.getElementById('lineuserid').textContent = data.context.userId;
+      document.getElementById('linedisplayname').textContent = data.context.displayName;
+
+      // sendMessages call
+      document.getElementById('sendmessagebutton').addEventListener('click', function () {
+        liff.sendMessages([{
+          type: 'text',
+          text: "You've successfully sent a message! Hooray!"
+        }, {
+          type: 'sticker',
+          packageId: '2',
+          stickerId: '144'
+        }]).then(function () {
+          window.alert("Message sent");
+        }).catch(function (error) {
+          window.alert("Error sending message: " + error);
+        });
+      });
+
+      //get profile call
+      document.getElementById('getprofilebutton').addEventListener('click', function () {
+        liff.getProfile().then(function (profile) {
+          document.getElementById('useridprofilefield').textContent = profile.userId;
+          document.getElementById('displaynamefield').textContent = profile.displayName;
+
+          var profilePictureDiv = document.getElementById('profilepicturediv');
+          if (profilePictureDiv.firstElementChild) {
+            profilePictureDiv.removeChild(profilePictureDiv.firstElementChild);
+          }
+          var img = document.createElement('img');
+          img.src = profile.pictureUrl;
+          img.alt = "Profile Picture";
+          profilePictureDiv.appendChild(img);
+
+          document.getElementById('statusmessagefield').textContent = profile.statusMessage;
+          toggleProfileData();
+        }).catch(function (error) {
+          window.alert("Error getting profile: " + error);
+        });
+      });
+    }
+
+  </script>
+
+</body>
+
+</html>
+{{ end }}
