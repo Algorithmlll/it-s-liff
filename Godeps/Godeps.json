@@ -1,5 +1,5 @@
 {
-    "ImportPath": "its-liff",
+    "ImportPath": "github.com/Alorithmlll/its-liff",
     "GoVersion": "go1.6",
     "Packages": [
         "./..."
