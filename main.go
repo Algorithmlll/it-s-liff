@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/thedevsaddam/renderer"
@@ -28,7 +29,12 @@ func main() {
 	router.HandleFunc("/", homeGETHandler).Methods("GET")
 	router.HandleFunc("/", homePOSTHandler).Methods("POST")
 
-	if error := http.ListenAndServe(":8000", router); error != nil {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8000"
+	}
+
+	if error := http.ListenAndServe(":"+port, router); error != nil {
 		log.Fatal(error)
 	}
 }
