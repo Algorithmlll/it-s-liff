@@ -1,14 +1,25 @@
 {
-    "ImportPath": "github.com/Alorithmlll/its-liff",
-    "GoVersion": "go1.6",
-    "Packages": [
-        "./..."
-    ],
-    "Deps": [
-        {
-            "ImportPath": "github.com/gin-gonic/gin",
-            "Comment": "v1.0rc1-110-g4cc2de6",
-            "Rev": "4cc2de6207f4128624cbdd16be30f64966c67c08"
-        }
-        ]
+	"ImportPath": "github.com/Algorithmlll/its-liff",
+	"GoVersion": "go1.10.1",
+	"GodepVersion": "v80",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/gorilla/mux",
+			"Comment": "v1.6.2-2-ge0b5aba",
+			"Rev": "e0b5abaaae35242fa74372f26c24107711702a4e"
+		},
+		{
+			"ImportPath": "github.com/thedevsaddam/renderer",
+			"Comment": "v1.2",
+			"Rev": "a01ea90186c0b32f7f0514a1ba3b6364340020e6"
+		},
+		{
+			"ImportPath": "gopkg.in/yaml.v2",
+			"Comment": "v2.2.1",
+			"Rev": "5420a8b6744d3b0345ab293f6fcba19c978f1183"
+		}
+	]
 }
